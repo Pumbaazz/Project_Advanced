@@ -23,7 +23,7 @@ WHERE (snl.productid =
 GROUP BY snn.customerid
 
 -- cau e ne
-SELECT  snn.modifieddate ,snn.customerid
+SELECT snn.customerid, snn.modifieddate 
 FROM n_salesorderheader snn JOIN n_salesorderdetail snl ON(snn.salesorderid = snl.salesorderid) 
 WHERE (snl.productid = 
 	(SELECT cdl.productid 
