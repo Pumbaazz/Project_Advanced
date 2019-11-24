@@ -1,22 +1,18 @@
 -- cau a ne	
 Select sod.ProductID, SUM(sod.UnitPrice) as TongTien
-From dbo.n_SalesOrderDetail as sod join dbo.n_SalesOrderHeader as soh	
+From dbo.n_SalesOrderDetail as sod join dbo.n_Product as pro	
+on(sod.SalesOrderID = pro.ProductID) join dbo.n_SalesOrderHeader as soh
 on(sod.SalesOrderID = soh.SalesOrderID)
-Where soh.OrderDate < '2014-05-15' and sod.ProductID = 
-	(Select pro.ProductID
-	From dbo.n_Product as pro
-	where sod.ProductID = pro.ProductID)
+Where soh.OrderDate < '2014-05-15' 
 Group by sod.ProductID 	
 Order by sod.ProductID ASC
 
 
 Select sod.ProductID, SUM(sod.UnitPriceDiscount) as TongTien
-From dbo.n_SalesOrderDetail as sod join dbo.n_SalesOrderHeader as soh	
+From dbo.n_SalesOrderDetail as sod join dbo.n_Product as pro	
+on(sod.SalesOrderID = pro.ProductID) join dbo.n_SalesOrderHeader as soh
 on(sod.SalesOrderID = soh.SalesOrderID)
-Where soh.OrderDate < '2014-05-15' and sod.ProductID = 
-	(Select pro.ProductID
-	From dbo.n_Product as pro
-	where sod.ProductID = pro.ProductID)
+Where soh.OrderDate < '2014-05-15' 
 Group by sod.ProductID 	
 Order by sod.ProductID ASC
 --cau b ne
@@ -64,10 +60,31 @@ WHERE (snl.productid =
 	WHERE cdl.name LIKE 'Water Bottle - 30 oz.') and (snn.modifieddate > '20130501' and snn.modifieddate > '20130801') )
 GROUP BY snn.customerid, snn.ModifiedDate
 
--- cau h ne
+-- cau h ne 
+-- using index
 CREATE NONCLUSTERED INDEX inde_test
 ON [dbo].[n_Product] ([ProductID])
 GO
+
+Select sod.ProductID, SUM(sod.UnitPrice) as TongTien
+From dbo.n_SalesOrderDetail as sod join dbo.n_SalesOrderHeader as soh	
+on(sod.SalesOrderID = soh.SalesOrderID)
+Where soh.OrderDate < '2014-05-15' and sod.ProductID = 
+	(Select pro.ProductID
+	From dbo.n_Product as pro
+	where sod.ProductID = pro.ProductID)
+Group by sod.ProductID 	
+Order by sod.ProductID ASC
+
+Select sod.ProductID, SUM(sod.UnitPriceDiscount) as TongTien
+From dbo.n_SalesOrderDetail as sod join dbo.n_SalesOrderHeader as soh	
+on(sod.SalesOrderID = soh.SalesOrderID)
+Where soh.OrderDate < '2014-05-15' and sod.ProductID = 
+	(Select pro.ProductID
+	From dbo.n_Product as pro
+	where sod.ProductID = pro.ProductID)
+Group by sod.ProductID 	
+Order by sod.ProductID ASC
 
 SELECT ModifiedDate FROM dbo.n_SalesOrderHeader ORDER BY ModifiedDate ASC
 --cau i demo
