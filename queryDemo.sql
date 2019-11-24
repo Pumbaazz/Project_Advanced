@@ -44,6 +44,11 @@ WHERE (snl.productid =
 	WHERE cdl.name LIKE 'Water Bottle - 30 oz.') and (snn.modifieddate > '20130501' and snn.modifieddate > '20130801') )
 GROUP BY snn.customerid, snn.ModifiedDate
 
+-- cau h ne
+CREATE NONCLUSTERED INDEX inde_test
+ON [dbo].[n_Product] ([ProductID])
+GO
+
 SELECT ModifiedDate FROM dbo.n_SalesOrderHeader ORDER BY ModifiedDate ASC
 --cau i demo
 --partition p2 include date 2013-05-01 < date < 2013-09-01
