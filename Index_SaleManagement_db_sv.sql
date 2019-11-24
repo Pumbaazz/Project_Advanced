@@ -136,10 +136,20 @@ go
 CREATE NONCLUSTERED INDEX pRoDuCtNaMe_INDEX ON n_product(Name)
 GO
 
+--using index with d question
 SELECT snn.customerid 
-FROM n_salesorderheader snn JOIN n_salesorderdetail AS snl ON(snn.salesorderid = snl.salesorderid) 
+FROM n_salesorderheader snn join n_salesorderdetail snl  ON(snn.salesorderid = snl.salesorderid)
 WHERE snl.productid = 
 	(SELECT cdl.productid 
-	FROM dbo.n_product AS cdl 
-	WHERE cdl.name LIKE 'Water Bottle - 30 oz.') 
-GROUP BY snn.customerid
+	FROM n_product cdl WITH(INDEX(PK_Product_ProductID , pRoDuCtNaMe_INDEX))
+	WHERE cdl.name LIKE 'Water Bottle - 30 oz.')
+GROUP BY snn.CustomerID
+
+--using index with e question 
+SELECT snn.customerid, snn.modifieddate 
+FROM n_salesorderheader snn JOIN n_salesorderdetail snl ON(snn.salesorderid = snl.salesorderid) 
+WHERE (snl.productid = 
+	(SELECT cdl.productid 
+	FROM dbo.n_product AS cdl WITH(INDEX(PK_Product_ProductID , pRoDuCtNaMe_INDEX))
+	WHERE cdl.name LIKE 'Water Bottle - 30 oz.') and (snn.modifieddate > '20130501' and snn.modifieddate > '20130801') )
+GROUP BY snn.customerid, snn.ModifiedDate
