@@ -1,18 +1,22 @@
 -- cau a ne	
-Select sod.ProductID, SUM(sod.UnitPrice) as TongTien	
-From dbo.n_SalesOrderDetail as sod join dbo.n_Product as pro	
-on(sod.ProductID = pro.ProductID) join dbo.n_SalesOrderHeader as soh	
-on(sod.SalesOrderID = soh.SalesOrderID)	
-where soh.DueDate < '2014-05-15'	
+Select sod.ProductID, SUM(sod.UnitPrice) as TongTien
+From dbo.n_SalesOrderDetail as sod join dbo.n_SalesOrderHeader as soh	
+on(sod.SalesOrderID = soh.SalesOrderID)
+Where soh.OrderDate < '2014-05-15' and sod.ProductID = 
+	(Select pro.ProductID
+	From dbo.n_Product as pro
+	where sod.ProductID = pro.ProductID)
 Group by sod.ProductID 	
-Order by sod.ProductID ASC	
+Order by sod.ProductID ASC
 
 
-Select sod.ProductID, SUM(sod.UnitPriceDiscount) as TongTien	
-From dbo.n_SalesOrderDetail as sod join dbo.n_Product as pro	
-on(sod.ProductID = pro.ProductID) join dbo.n_SalesOrderHeader as soh	
-on(sod.SalesOrderID = soh.SalesOrderID)	
-where soh.DueDate < '2014-05-15'	
+Select sod.ProductID, SUM(sod.UnitPriceDiscount) as TongTien
+From dbo.n_SalesOrderDetail as sod join dbo.n_SalesOrderHeader as soh	
+on(sod.SalesOrderID = soh.SalesOrderID)
+Where soh.OrderDate < '2014-05-15' and sod.ProductID = 
+	(Select pro.ProductID
+	From dbo.n_Product as pro
+	where sod.ProductID = pro.ProductID)
 Group by sod.ProductID 	
 Order by sod.ProductID ASC
 --cau b ne
