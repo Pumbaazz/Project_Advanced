@@ -1,4 +1,4 @@
-create database "2019_CSDLNC_DA1_GROUP5_Index"
+create database "2019_CSDLNC_DA1_GROUP4_Index"
 
 ON (NAME = '2019_CSDLNC_DA1_GROUP5', FILENAME = 'D:\okela\2019_CSDLNC_DA1_GROUP5_Index.mdf')
 LOG ON (NAME = '2019_CSDLNC_DA1_GROUP5_log', FILENAME = 'D:\okela\2019_CSDLNC_DA1_GROUP5_Index_log.ldf')
