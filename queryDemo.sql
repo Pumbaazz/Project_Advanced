@@ -1,3 +1,21 @@
+-- cau a ne	
+Select sod.ProductID, SUM(sod.UnitPrice) as TongTien	
+From dbo.n_SalesOrderDetail as sod join dbo.n_Product as pro	
+on(sod.ProductID = pro.ProductID) join dbo.n_SalesOrderHeader as soh	
+on(sod.SalesOrderID = soh.SalesOrderID)	
+where soh.DueDate < '2014-05-15'	
+Group by sod.ProductID 	
+Order by sod.ProductID ASC	
+
+
+Select sod.ProductID, SUM(sod.UnitPriceDiscount) as TongTien	
+From dbo.n_SalesOrderDetail as sod join dbo.n_Product as pro	
+on(sod.ProductID = pro.ProductID) join dbo.n_SalesOrderHeader as soh	
+on(sod.SalesOrderID = soh.SalesOrderID)	
+where soh.DueDate < '2014-05-15'	
+Group by sod.ProductID 	
+Order by sod.ProductID ASC
+
 --cau c ne
 SELECT SUM(snn.totaldue) AS "Online Order" FROM dbo.n_salesorderheader AS snn WHERE snn.onlineorderflag = 1
 SELECT SUM(snn.totaldue) AS "Offline Order" FROM dbo.n_salesorderheader AS snn WHERE snn.onlineorderflag = 0
