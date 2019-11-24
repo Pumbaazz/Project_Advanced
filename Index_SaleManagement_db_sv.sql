@@ -147,9 +147,9 @@ GROUP BY snn.CustomerID
 
 --using index with e question 
 SELECT snn.customerid, snn.modifieddate 
-FROM n_salesorderheader snn JOIN n_salesorderdetail snl ON(snn.salesorderid = snl.salesorderid) 
+FROM n_salesorderheader snn , n_salesorderdetail snl -- ON(snn.salesorderid = snl.salesorderid) 
 WHERE (snl.productid = 
 	(SELECT cdl.productid 
-	FROM dbo.n_product AS cdl WITH(INDEX(PK_Product_ProductID , pRoDuCtNaMe_INDEX))
+	FROM dbo.n_product AS cdl WITH(INDEX(pRoDuCtNaMe_INDEX))
 	WHERE cdl.name LIKE 'Water Bottle - 30 oz.') and (snn.modifieddate > '20130501' and snn.modifieddate > '20130801') )
 GROUP BY snn.customerid, snn.ModifiedDate

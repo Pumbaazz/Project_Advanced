@@ -15,7 +15,7 @@ SELECT * FROM n_salesorderheader ORDER BY modifieddate DESC
 
 -- cau e ne
 SELECT snn.customerid, snn.modifieddate 
-FROM n_salesorderheader snn JOIN n_salesorderdetail snl ON(snn.salesorderid = snl.salesorderid) 
+FROM n_salesorderheader snn , n_salesorderdetail snl --ON(snn.salesorderid = snl.salesorderid) 
 WHERE (snl.productid = 
 	(SELECT cdl.productid 
 	FROM dbo.n_product AS cdl 
@@ -31,6 +31,6 @@ SELECT snn.customerid, snn.modifieddate
 FROM n_salesorderheader snn JOIN n_salesorderdetail snl ON(snn.salesorderid = snl.salesorderid) 
 WHERE (snl.productid = 
 	(SELECT cdl.productid 
-	FROM dbo.n_product AS cdl WITH PARTITION('p2')
+	FROM dbo.n_product AS cdl WITH(PARTITION('p2'))
 	WHERE cdl.name LIKE 'Water Bottle - 30 oz.') )
 GROUP BY snn.customerid, snn.ModifiedDate
