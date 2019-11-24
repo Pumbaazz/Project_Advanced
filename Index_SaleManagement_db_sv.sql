@@ -1,10 +1,10 @@
 create database "2019_CSDLNC_DA1_GROUP4_Index"
 
-ON (NAME = '2019_CSDLNC_DA1_GROUP5', FILENAME = 'D:\okela\2019_CSDLNC_DA1_GROUP5_Index.mdf')
-LOG ON (NAME = '2019_CSDLNC_DA1_GROUP5_log', FILENAME = 'D:\okela\2019_CSDLNC_DA1_GROUP5_Index_log.ldf')
+ON (NAME = '2019_CSDLNC_DA1_GROUP4', FILENAME = 'D:\okela\2019_CSDLNC_DA1_GROUP4_Index.mdf')
+LOG ON (NAME = '2019_CSDLNC_DA1_GROUP4_log', FILENAME = 'D:\okela\2019_CSDLNC_DA1_GROUP4_Index_log.ldf')
 GO
 --drop database iSaleManagement
-use "2019_CSDLNC_DA1_GROUP5_Index"
+use "2019_CSDLNC_DA1_GROUP4_Index"
 go
 --drop table [n_SalesOrderHeader]
 
@@ -153,3 +153,28 @@ WHERE (snl.productid =
 	FROM dbo.n_product AS cdl WITH(INDEX(pRoDuCtNaMe_INDEX))
 	WHERE cdl.name LIKE 'Water Bottle - 30 oz.') and (snn.modifieddate > '20130501' and snn.modifieddate > '20130801') )
 GROUP BY snn.customerid, snn.ModifiedDate
+
+--cau b
+select distinct count(soh.SalesPersonID) from n_SalesOrderDetail sod join n_SalesOrderHeader soh on sod.SalesOrderID = soh.SalesOrderID	group by soh.SalesPersonID
+
+
+create proc showGood
+	@inputYear int
+as
+begin
+		declare @pastYear int, @thisYear int
+		set @pastYear = (select soh.SalesPersonID, count(soh.SalesPersonID) as Appear from n_SalesOrderDetail sod join n_SalesOrderHeader soh on sod.SalesOrderID = soh.SalesOrderID 
+		where year(soh.ModifiedDate) = @inputYear-1
+		group by soh.SalesPersonID
+		)
+
+		set @thisYear = (select soh.SalesPersonID, count(soh.SalesPersonID) as Appear from n_SalesOrderDetail sod join n_SalesOrderHeader soh on sod.SalesOrderID = soh.SalesOrderID 
+		where year(soh.ModifiedDate) = @inputYear
+		group by soh.SalesPersonID
+		)
+		if(@pastYear < @thisYear)
+			print'this is the person'
+	end
+go
+
+exec showGood 2013
