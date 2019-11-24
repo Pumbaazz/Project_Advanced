@@ -19,7 +19,27 @@ Where soh.OrderDate < '2014-05-15' and sod.ProductID =
 	where sod.ProductID = pro.ProductID)
 Group by sod.ProductID 	
 Order by sod.ProductID ASC
+--cau b ne
+create proc showGood
+	@inputYear int
+as
+begin
+		declare @pastYear int, @thisYear int
+		set @pastYear = (select soh.SalesPersonID, count(soh.SalesPersonID) as Appear from n_SalesOrderDetail sod join n_SalesOrderHeader soh on sod.SalesOrderID = soh.SalesOrderID 
+		where year(soh.ModifiedDate) = @inputYear-1
+		group by soh.SalesPersonID
+		)
 
+		set @thisYear = (select soh.SalesPersonID, count(soh.SalesPersonID) as Appear from n_SalesOrderDetail sod join n_SalesOrderHeader soh on sod.SalesOrderID = soh.SalesOrderID 
+		where year(soh.ModifiedDate) = @inputYear
+		group by soh.SalesPersonID
+		)
+		if(@pastYear < @thisYear)
+			print'this is the person'
+	end
+go
+
+exec showGood 2013
 --cau c ne
 SELECT SUM(snn.totaldue) AS "Online Order" FROM dbo.n_salesorderheader AS snn WHERE snn.onlineorderflag = 1
 SELECT SUM(snn.totaldue) AS "Offline Order" FROM dbo.n_salesorderheader AS snn WHERE snn.onlineorderflag = 0

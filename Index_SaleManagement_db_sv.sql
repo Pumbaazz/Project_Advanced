@@ -158,23 +158,3 @@ GROUP BY snn.customerid, snn.ModifiedDate
 select distinct count(soh.SalesPersonID) from n_SalesOrderDetail sod join n_SalesOrderHeader soh on sod.SalesOrderID = soh.SalesOrderID	group by soh.SalesPersonID
 
 
-create proc showGood
-	@inputYear int
-as
-begin
-		declare @pastYear int, @thisYear int
-		set @pastYear = (select soh.SalesPersonID, count(soh.SalesPersonID) as Appear from n_SalesOrderDetail sod join n_SalesOrderHeader soh on sod.SalesOrderID = soh.SalesOrderID 
-		where year(soh.ModifiedDate) = @inputYear-1
-		group by soh.SalesPersonID
-		)
-
-		set @thisYear = (select soh.SalesPersonID, count(soh.SalesPersonID) as Appear from n_SalesOrderDetail sod join n_SalesOrderHeader soh on sod.SalesOrderID = soh.SalesOrderID 
-		where year(soh.ModifiedDate) = @inputYear
-		group by soh.SalesPersonID
-		)
-		if(@pastYear < @thisYear)
-			print'this is the person'
-	end
-go
-
-exec showGood 2013
